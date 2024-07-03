@@ -1,0 +1,129 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-management {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-management h1 {
+  color: #2c3e50;
+  margin-top: 30px; /* Set margin-top to 30px */
+}
+
+table:hover {
+  background-color: transparent;;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  height: auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-user .profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: color 0.3s, background-color 0.3s, font-size 0.3s, transform 0.3s;
+}
+
+.sidebar ul li a:hover {
+  color: #ffffff;
+  background-color: #365069;
+  font-size: 1.1em;
+  transform: scale(1.05);
+}
+
+.sidebar ul li a i,
+.sidebar ul li a .sidebar-icon {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar ul li:last-child {
+  margin-top: 350px;
+}
+
+.sidebar-user {
+  margin-top: 50px;
+}
+
+.add-product-button {
+  margin-top: 20px;
+  font-size: 14px;
+  padding: 12px 10px;
+  background-color: #153448; /* Warna latar belakang */
+  color: white; /* Warna teks */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;  /* Transisi animasi perubahan warna latar belakang */
+}
+
+.add-product-button:hover {
+  background-color: #214c69; /* Warna latar belakang saat tombol dihover */
+}
+
+/* Styling for delete button */
+.action-button {
+  background-color: #e74c3c; /* Warna latar belakang */
+  color: white; /* Warna teks */
+  border: none;
+  padding: 8px 15px; /* Atur padding untuk memberikan ruang di sekitar teks */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transisi animasi perubahan warna latar belakang */
+}
+
+.action-button:hover {
+  background-color: #c0392b; /* Warna latar belakang saat tombol dihover */
+}
+
+.action-button img {
+  width: 20px; /* Sesuaikan ukuran ikon sesuai kebutuhan */
+  height: 20px;
+  vertical-align: middle; /* Posisi vertikal ikon agar sejajar dengan teks */
+  margin-right: 5px; /* Berikan jarak ke kanan dari teks */
+}

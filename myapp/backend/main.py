@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, Path
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
@@ -47,7 +47,6 @@ app.add_middleware(
     allow_origin_regex='http://localhost:.*',
 )
 
-
 @app.on_event("startup")
 def startup():
     try:
@@ -94,7 +93,7 @@ async def login(login_request: LoginRequest):
         cursor.close()
         
         if user:
-            return {"msg": "Login successful", "user": user}
+            return {"redirect_url": "/dashboard"}
         else:
             raise HTTPException(status_code=401, detail="Invalid username or password")
     except Error as e:
@@ -177,7 +176,7 @@ async def add_transaction(transaction: Transaction):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Unexpected error: {str(e)}")
     
-@app.get("/users", response_model=List[User])
+@app.get("/users")
 def get_users():
     try:
         cursor = app.state.db_connection.cursor(dictionary=True)
@@ -190,4 +189,58 @@ def get_users():
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Unexpected error: {str(e)}")
 
+@app.delete("/products/{product_id}")
+async def delete_product(product_id: int = Path(..., title="The ID of the product to delete")):
+    try:
+        cursor = app.state.db_connection.cursor()
+        cursor.execute("DELETE FROM products WHERE id = %s", (product_id,))
+        app.state.db_connection.commit()
+        cursor.close()
+        return {"msg": f"Product with ID {product_id} deleted successfully"}
+    except Error as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete product: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+    
+@app.put("/product/edit/{product_id}")
+async def edit_product(product_id: int, product: Product):
+    try:
+        cursor = app.state.db_connection.cursor()
+        cursor.execute("""
+            UPDATE products 
+            SET name = %s, category = %s, price = %s, stock = %s, image_url = %s
+            WHERE id = %s
+        """, (product.name, product.category, product.price, product.stock, product.image_url, product_id))
+        app.state.db_connection.commit()
+        cursor.close()
+        return {"msg": f"Product with ID {product_id} updated successfully"}
+    except Error as e:
+        raise HTTPException(status_code=400, detail=f"Failed to update product: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Unexpected error: {str(e)}")
 
+@app.delete("/transactions/{transaction_id}")
+async def delete_transaction(transaction_id: int = Path(..., title="The ID of the transaction to delete")):
+    try:
+        cursor = app.state.db_connection.cursor()
+        cursor.execute("DELETE FROM transactions WHERE transaction_id = %s", (transaction_id,))
+        app.state.db_connection.commit()
+        cursor.close()
+        return {"msg": f"Transaction with ID {transaction_id} deleted successfully"}
+    except Error as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete transaction: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+@app.delete("/users/{username}")
+async def delete_user(username: str):
+    try:
+        cursor = app.state.db_connection.cursor()
+        cursor.execute("DELETE FROM users WHERE username = %s", (username,))
+        app.state.db_connection.commit()
+        cursor.close()
+        return {"msg": f"User '{username}' deleted successfully"}
+    except Error as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete user: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")

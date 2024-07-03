@@ -7,7 +7,7 @@ import ProductManagement from './components/ProductManagement';
 import AddProduct from './components/AddProduct';
 import Transaction from './components/Transaction';
 import AddTransaction from './components/AddTransaction';
-import Users from './components/Users';
+import UserManagement from './components/UserManagement';
 
 function App() {
   return (
@@ -16,14 +16,14 @@ function App() {
         <Route exact path="/">
           <Redirect to="/login" />
         </Route>
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/products" component={ProductManagement} />
-        <Route path="/add-transaction" component={AddTransaction} />
-        <Route path="/add-product" component={AddProduct} />
-        <Route path="/transactions" component={Transaction} />
-        <Route path="/users" component={Users} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/products" component={ProductManagement} />
+        <Route path="/add-product" component={AddProduct} />
+        <Route path="/transactions" component={Transaction} />
+        <Route path="/add-transaction" component={AddTransaction} />
+        <Route path="/users" component={UserManagement} />
         {/* Add other routes here */}
       </Switch>
     </Router>

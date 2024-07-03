@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Register.css'; // Import CSS file
+import '../style/Register.css'; // Import CSS file
 
 function Register() {
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [registerError, setRegisterError] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,12 +19,19 @@ function Register() {
         password,
         role: 'user', // Assuming a default role for new users
       });
-      alert(response.data.msg);
+      setRegisterSuccess(true);
+      setTimeout(() => {
+        setRegisterSuccess(false);
+      }, 3000); // Hide success message after 3 seconds
     } catch (error) {
       console.error('Registration failed:', error.response.data);
-      alert('Registration failed');
+      setRegisterError(true);
+      setTimeout(() => {
+        setRegisterError(false);
+      }, 3000); // Hide error message after 3 seconds
     }
   };
+  
 
   return (
     <div className="login-container">
@@ -29,6 +39,16 @@ function Register() {
         <h1>Inventoryqu</h1>
       </div>
       <div className="login-right">
+      {registerSuccess && (
+      <div className="success-popup">
+        <p>Registration successful!</p>
+      </div>
+    )}
+    {registerError && (
+      <div className="error-popup">
+        <p>Registration failed. Please try again.</p>
+      </div>
+    )}
         <form onSubmit={handleSubmit} className="login-form">
           <h2>Register Now</h2>
           <div className="input-group">
@@ -40,7 +60,7 @@ function Register() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="login-input"
-            />
+              required/>
           </div>
           <div className="input-group">
             <label htmlFor="username">Username</label>
@@ -51,6 +71,7 @@ function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="login-input"
+              required
             />
           </div>
           <div className="input-group">
@@ -62,6 +83,7 @@ function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
+              required
             />
           </div>
           <button type="submit" className="login-button">

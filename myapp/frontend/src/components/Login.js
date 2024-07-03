@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import './Login.css'; // Import the CSS file
+import '../style/Login.css'; // Import the CSS file
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,14 +19,21 @@ function Login() {
         password
       });
       console.log(response.data.msg);
-      alert(response.data.msg);
       localStorage.setItem('username', username);  // Store username
-      window.location.href = '/dashboard'; // Redirect to dashboard
+      setLoginSuccess(true);
+      setTimeout(() => {
+        setLoginSuccess(false);
+        history.push('/dashboard'); // Redirect to dashboard
+      }, 3000); // Hide success message after 3 seconds and redirect
     } catch (error) {
       console.error('Login failed:', error.response.data);
-      alert('Login failed');
+      setLoginError(true);
+      setTimeout(() => {
+        setLoginError(false);
+      }, 3000); // Hide error message after 3 seconds
     }
   };
+  
   
 
   return (
@@ -32,6 +42,16 @@ function Login() {
         <h1>Inventoryqu</h1>
       </div>
       <div className="login-right">
+          {loginSuccess && (
+    <div className="success-popup">
+      <p>Login successful!</p>
+    </div>
+  )}
+  {loginError && (
+    <div className="error-popup">
+      <p>Login failed. Please try again.</p>
+    </div>
+  )}
         <form onSubmit={handleSubmit} className="login-form">
           <h2>Nice to see you again</h2>
           <div className="input-group">
